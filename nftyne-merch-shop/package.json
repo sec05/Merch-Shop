@@ -11,7 +11,9 @@
     "@chakra-ui/react": "^1.7.4",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "dotenv": "^10.0.0",
     "framer-motion": "5",
+    "google-spreadsheet": "^3.2.0",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2"
