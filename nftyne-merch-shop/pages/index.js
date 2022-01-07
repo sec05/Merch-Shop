@@ -9,13 +9,39 @@ export default function Home() {
   const [cart, updateCart] = useState(0);
   const [items, updateItems] = useState([])
   const [names, updateNames] = useState([])
+  //data in form:
+  /*{
+    "clothes": {
+        "Nickelodeon Sweatshirts": {
+            "sm": 1,
+            "md": 0,
+            "lg": 1,
+            "xl": 1
+        },
+        "Sweatpants": {
+            "sm": 0,
+            "md": 0,
+            "lg": 8,
+            "xl": 3
+        }
+    },
+    "nonClothes": {
+        "Black Water Bottles": 4,
+        "Green Water Bottles": 11,
+        "Purple Water Bottles": 9,
+        "Turqoiuse Water Bottles": 7,
+        "Beanie Hats": 24,
+        "Stickers": 92
+    }
+}*/
   useEffect(() => {
     fetch("/api/items")
       .then((res) => res.json())
       .then((data) => {
         updateLoadedItems(true)
+        console.log(data)
       });
-  });
+  },[]);
 
 
   const addToCart = (n,str)=>{
