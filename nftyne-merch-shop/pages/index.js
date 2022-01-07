@@ -1,9 +1,14 @@
-import { Divider, Flex, Image, Heading } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import Item from "../Components/Item";
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
+
+
+
 export default function Home() {
   const [loadedItems, updateLoadedItems] = useState(false);
+  const [cart, updateCart] = useState(0);
+  const [items, updateItems] = useState([])
+  const [names, updateNames] = useState([])
   useEffect(() => {
     fetch("/api/items")
       .then((res) => res.json())
@@ -11,15 +16,33 @@ export default function Home() {
         updateLoadedItems(true)
       });
   });
+
+
+  const addToCart = (n,str)=>{
+    return new Promise((res, rej)=>{
+      return res()
+     
+    }).then(()=>{
+      let m = cart + 1
+      updateCart(m);
+    }).then(()=>{ 
+      let m = items
+      m.push(n)
+      updateItems(m)
+
+      m = names
+      m.push(str)
+      updateNames(m)
+
+  })
+}
   return (
-    <Flex alignItems="center" justifyContent="center">
-      <Head>
-        <title>NFTY-NE Merch</title>
-      </Head>
+    <Flex alignItems="center"  justifyContent="center">
       
       <Flex direction="column">
-        <Flex marginTop="3%" direction="column" alignItems="center">
+        <Flex marginTop="3%" width="100%"  direction="column" justifyContent="space-evenly">
           <Heading size="4xl">NFTY-NE Merch Shop</Heading>
+            <Heading cursor="pointer" >Cart ({cart})</Heading>
         </Flex>
         <Flex direction="column" alignItems="center">
          {!loadedItems && (
@@ -27,15 +50,13 @@ export default function Home() {
          )}
          {loadedItems && (
            <>
-           <Item />
-           <Divider height="5%" orientation='horizontal' /></>
+           <Item max={9} name="water bottle" update={addToCart} />
+           </>
          )}
         </Flex>
-      </Flex>
-      <Flex direction="column" alignItems="center" width="15%">
-          <Heading>Cart</Heading>
-          <Divider />
-      </Flex>
+      </Flex>    
+      
+      
     </Flex>
   );
 }
