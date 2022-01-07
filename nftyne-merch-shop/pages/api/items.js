@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     for(let i = 23; i <= 24; i++){ 
       let tmp = {}
       for(let j = 1; j <= 4; j++){
-        tmp[sizes[j-1]] = sheet.getCell(i,j).value;
+        tmp[sizes[j-1]] = [sheet.getCell(i,j).value, sheet.getCell(i,7).value];
       }
       clothes[sheet.getCell(i,0).value] = tmp
     }
@@ -20,9 +20,9 @@ export default async function handler(req, res) {
   const getNonClothes = () => {
     let items = {}
     for(let i = 25; i <= 29; i++){
-      items[sheet.getCell(i,0).value] = sheet.getCell(i,5).value
+      items[sheet.getCell(i,0).value] = [sheet.getCell(i,5).value, sheet.getCell(i,7).value]
     }
-    items[sheet.getCell(32,0).value] = sheet.getCell(32,5).value
+    items[sheet.getCell(32,0).value] = [sheet.getCell(32,5).value, sheet.getCell(32,7).value]
     return items
   }
     const items = {clothes: getClothesSize(), nonClothes: getNonClothes()}
