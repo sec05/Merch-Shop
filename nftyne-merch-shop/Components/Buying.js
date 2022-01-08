@@ -20,6 +20,7 @@ export default function Buying(props) {
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
     const [paying, setPaying] = useState(false)
+    const [totals, setTotals] = useState([props.data[1],props.data[0]])
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handleNameChange = (e) => setName(e.target.value)
     const handleAddressChange = (e) => setAddress(e.target.value)
@@ -40,23 +41,35 @@ export default function Buying(props) {
             window.alert("Please fill out shipping completely before continuing!")
         }
     }
-    useEffect(() => {
+    const s = (i) => names.map((name) => {
+        i++
 
+
+        return <Tr key={i}>
+            <Td>{name[0]}</Td>
+            <Td>{items[i - 1][1]}</Td>
+            <Td><Center>{items[i - 1][0]}</Center></Td>
+            <Td><Center>{items[i - 1][0] * name[1]}</Center></Td>
+            <Td><Button colorScheme="red" onClick={()=>removeItem(i-1)}>Remove</Button></Td>
+        </Tr>
+    })
+    const removeItem = (index) =>
+    {
+        props.updateCart(names.length - 1)
         let i = 0;
-        const s = () => names.map((name) => {
-            i++
+        console.log(totals)
+        let amt = totals[0] - items[index][0]
+        let price = totals[1] - (names[index][1]*items[index][0])
+        if (index > -1) {
+          names.splice(index, 1);
+          items.splice(index,1)
+        }
+        updateSummary(s(i))
+        setTotals([ amt, price])
 
-
-            return <Tr key={i}>
-                <Td>{name[0]}</Td>
-                <Td>{items[i - 1][1]}</Td>
-                <Td><Center>{items[i - 1][0]}</Center></Td>
-                <Td><Center>{items[i - 1][0] * name[1]}</Center></Td>
-                <Td><Button colorScheme="red">Remove</Button></Td>
-            </Tr>
-        })
-        updateSummary(s)
-
+    }
+    useEffect(() => {
+    updateSummary(s(0))
     }, [])
 
 
@@ -67,7 +80,7 @@ export default function Buying(props) {
             {!paying && (
                 <>
                     <Table>
-                        <TableCaption color="black" fontSize="150%">You are buying {props.data[1]} items for ${props.data[0]}</TableCaption>
+                        <TableCaption color="black" fontSize="150%">You are buying {totals[0]} items for ${totals[1]}</TableCaption>
                         <Thead>
                             <Tr>
                                 <Th>Item</Th>

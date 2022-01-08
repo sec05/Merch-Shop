@@ -15,14 +15,12 @@ export default function Home() {
   const [buying, updateBuying] = useState(false)
   const [totals, updateTotals] = useState([])
   
-let counter = 0 
 const addToCart = (n, str,size,price) => {
     return new Promise((res, rej) => {
       return res()
     }).then(() => {
-      counter++
-      updateCart(counter);  
-      let j = items
+      let j = items 
+      updateCart(j.length+1);  
       j.push([n,size])
       updateItems(j)
     
@@ -36,11 +34,11 @@ const addToCart = (n, str,size,price) => {
       .then((res) => res.json())
       .then((data) => {
       const c =  Object.keys(data.clothes).map((key,index) =>{
-          return <Clothes key={index} max={3} name={key} update={addToCart} price={data.clothes[key].sm[1]} sm={data.clothes[key].sm[0]} md={data.clothes[key].md[0]} lg={data.clothes[key].lg[0]} xl={data.clothes[key].xl[0]} img="/waterBottle.jpg" />
+          return <Clothes key={index} max={25} name={key} update={addToCart} price={data.clothes[key].sm[1]} sm={data.clothes[key].sm[0]} md={data.clothes[key].md[0]} lg={data.clothes[key].lg[0]} xl={data.clothes[key].xl[0]} img="/waterBottle.jpg" />
         })
         updateClothes(c)
         const nc = Object.keys(data.nonClothes).map((key,index) =>{
-          return <NonClothes key={index} max={3} price={data.nonClothes[key][1]} name={key} update={addToCart} img="/waterBottle.jpg"/>
+          return <NonClothes key={index} max={25} price={data.nonClothes[key][1]} name={key} update={addToCart} img="/waterBottle.jpg"/>
         })
         updateNonClothes(nc)
         updateLoadedItems(true)
@@ -96,7 +94,7 @@ const toggleBuying = () =>{
         
         
         </>)}
-        {buying &&(<Buying names={names} items={items} data={totals} />)}
+        {buying &&(<Buying names={names} items={items} data={totals} updateCart={updateCart}/>)}
       </Flex>
 
 

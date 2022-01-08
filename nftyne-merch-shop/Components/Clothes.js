@@ -32,12 +32,14 @@ export default function Clothes(props) {
     })
     const onSubmit = () => {
         if (amount == 0) return
-        const size = document.getElementById(props.name+" sizes").value 
+       const size = document.getElementById(props.name+" sizes").value 
         if( amount > sizes[size])
         {
             window.alert("You've selected too many"+props.name+" product!")
         }
-        props.update(amount, props.name, size, props.price)
+        else{ 
+        props.update(amount, props.name, size, props.price)}
+        
 
     }
     return (

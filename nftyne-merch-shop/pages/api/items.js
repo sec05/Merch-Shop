@@ -1,7 +1,11 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+require("dotenv").config()
 export default async function handler(req, res) {
   const doc = new GoogleSpreadsheet('1LOuiFOCWEbFn-C01CUYm2zwr72mwyOzajuE8_J1DefI');
-  await doc.useServiceAccountAuth(require("../../key.json"));
+  await doc.useServiceAccountAuth({
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  });
   await doc.loadInfo();
   const sheet = doc.sheetsByIndex[0]; 
   await sheet.loadCells("A1:L39") 

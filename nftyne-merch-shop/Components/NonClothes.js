@@ -18,7 +18,10 @@ export default function NonClothes(props) {
         if(amount > max) {
             window.alert("You've selected too many "+props.name+"! The max you can buy is "+ Max+"!")
         }
-        props.update(amount, props.name,null,props.price)
+        else{
+            props.update(amount, props.name,null,props.price)
+        }
+        
         
     }
     return (
