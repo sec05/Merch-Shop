@@ -20,7 +20,8 @@ export default function Buying(props) {
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
     const [paying, setPaying] = useState(false)
-    const [totals, setTotals] = useState([props.data[1],props.data[0]])
+    const [totalAmt, setTotalAmt] = useState(props.data[1])
+    const [totalPrice, setTotalPrice] = useState(props.data[0])
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handleNameChange = (e) => setName(e.target.value)
     const handleAddressChange = (e) => setAddress(e.target.value)
@@ -57,16 +58,16 @@ export default function Buying(props) {
     {
         props.updateCart(names.length - 1)
         let i = 0;
-        console.log(totals)
-        let amt = totals[0] - items[index][0]
-        let price = totals[1] - (names[index][1]*items[index][0])
+        props.data[1]--
+        let amt = props.data[1] - items[index][0]
+        props.data[0] = props.data[0] - (names[index][1]*items[index][0])
         if (index > -1) {
           names.splice(index, 1);
           items.splice(index,1)
         }
         updateSummary(s(i))
-        setTotals([ amt, price])
-
+        setTotalAmt(props.data[1])
+        setTotalPrice(props.data[0])
     }
     useEffect(() => {
     updateSummary(s(0))
@@ -80,7 +81,7 @@ export default function Buying(props) {
             {!paying && (
                 <>
                     <Table>
-                        <TableCaption color="black" fontSize="150%">You are buying {totals[0]} items for ${totals[1]}</TableCaption>
+                        <TableCaption color="black" fontSize="150%">You are buying {totalAmt} items for ${totalPrice}</TableCaption>
                         <Thead>
                             <Tr>
                                 <Th>Item</Th>
