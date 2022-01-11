@@ -40,7 +40,18 @@ export default function Buying(props) {
       .then((res) => res.json())
       .then((data) => {
           const clothes = data.clothes;
-          
+          let goodItems = []
+          let strippedNames = []
+          for(let i = 0; i < names.length; i++){
+              strippedNames.push([names[i][0],items[i]])
+          }
+          Object.keys(clothes).map((key,index)=>{
+              if(strippedNames.some(row => row.includes(key)))
+              {
+                  
+                goodItems.push(key)
+              }
+          })
           togglePaying()
         })
             
