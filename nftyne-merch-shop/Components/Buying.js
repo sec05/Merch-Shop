@@ -36,7 +36,14 @@ export default function Buying(props) {
     const proceedToPayment = () => {
         console.log(isEmailError)
         if (!isAddressError && !isEmailError && !isNameError) {
-            togglePaying()
+            fetch("/api/items")
+      .then((res) => res.json())
+      .then((data) => {
+          const clothes = data.clothes;
+          
+          togglePaying()
+        })
+            
         }
         else {
             window.alert("Please fill out shipping completely before continuing!")

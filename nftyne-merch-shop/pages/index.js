@@ -34,11 +34,11 @@ const addToCart = (n, str,size,price) => {
       .then((res) => res.json())
       .then((data) => {
       const c =  Object.keys(data.clothes).map((key,index) =>{
-          return <Clothes key={index} max={25} name={key} update={addToCart} price={data.clothes[key].sm[1]} sm={data.clothes[key].sm[0]} md={data.clothes[key].md[0]} lg={data.clothes[key].lg[0]} xl={data.clothes[key].xl[0]} img="/waterBottle.jpg" />
+          return <Clothes key={index} max={25} name={key} update={addToCart} price={data.clothes[key].sm[1]} sm={data.clothes[key].sm[0]} md={data.clothes[key].md[0]} lg={data.clothes[key].lg[0]} xl={data.clothes[key].xl[0]} img={"/"+key+".jpg"} />
         })
         updateClothes(c)
         const nc = Object.keys(data.nonClothes).map((key,index) =>{
-          return <NonClothes key={index} max={25} price={data.nonClothes[key][1]} name={key} update={addToCart} img="/waterBottle.jpg"/>
+          return <NonClothes key={index} max={25} price={data.nonClothes[key][1]} name={key} update={addToCart} img={"/"+key+".jpg"}/>
         })
         updateNonClothes(nc)
         updateLoadedItems(true)
