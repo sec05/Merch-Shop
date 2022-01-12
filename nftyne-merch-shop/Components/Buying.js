@@ -34,27 +34,50 @@ export default function Buying(props) {
         else setPaying(true)
     }
     const proceedToPayment = () => {
-        console.log(isEmailError)
         if (!isAddressError && !isEmailError && !isNameError) {
             fetch("/api/items")
-      .then((res) => res.json())
-      .then((data) => {
-          const clothes = data.clothes;
-          let goodItems = []
-          let strippedNames = []
-          for(let i = 0; i < names.length; i++){
-              strippedNames.push([names[i][0],items[i]])
-          }
-          Object.keys(clothes).map((key,index)=>{
-              if(strippedNames.some(row => row.includes(key)))
-              {
-                  
-                goodItems.push(key)
-              }
-          })
-          togglePaying()
-        })
-            
+                .then((res) => res.json())
+                .then((data) => {
+                    const clothes = data.clothes;
+                    let goodItems = []
+                    let strippedNames = []
+                    for (let i = 0; i < names.length; i++) {
+                        strippedNames.push([names[i][0], items[i]])
+                    }
+                    for (let i = 0; i < strippedNames.length; i++) {
+                        for (let j = 0; j < strippedNames.length; j++) {
+                            //if names and sizes are the same
+                            if (strippedNames[i][0] === strippedNames[j][0] && strippedNames[0][1][1] === strippedNames[j][1][1]) {
+                                strippedNames[i][1][0] += strippedNames[j][1][0];
+                                const index = strippedNames.indexOf(strippedNames[j]);
+                                if (index > -1) {
+                                    strippedNames.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+                    console.log(strippedNames)
+                    Object.keys(clothes).map((key, index) => {
+                        for (let i = 0; i < strippedNames.length; i++) {
+                            if (strippedNames[i][0] === key) {
+                                if (clothes[key][strippedNames[0][1][1]][0] === strippedNames[i][1][0])
+                                    goodItems.push(strippedNames[i])
+                                else {
+                                    window.alert(key + " in size " + strippedNames[0][1][1] + " is not available for sale anymore! There are " + clothes[key][strippedNames[0][1][1]][0] + " remaining. Please remove it from your cart to continue! Sorry!")
+                                    break;
+                                }
+                            }
+
+
+                        }
+
+
+                    })
+                    console.log(goodItems.length)
+                    if (goodItems.length > 0)
+                        togglePaying()
+                })
+
         }
         else {
             window.alert("Please fill out shipping completely before continuing!")
@@ -69,26 +92,25 @@ export default function Buying(props) {
             <Td>{items[i - 1][1]}</Td>
             <Td><Center>{items[i - 1][0]}</Center></Td>
             <Td><Center>{items[i - 1][0] * name[1]}</Center></Td>
-            <Td><Button colorScheme="red" onClick={()=>removeItem(i-1)}>Remove</Button></Td>
+            <Td><Button colorScheme="red" onClick={() => removeItem(i - 1)}>Remove</Button></Td>
         </Tr>
     })
-    const removeItem = (index) =>
-    {
+    const removeItem = (index) => {
         props.updateCart(names.length - 1)
         let i = 0;
         props.data[1]--
         let amt = props.data[1] - items[index][0]
-        props.data[0] = props.data[0] - (names[index][1]*items[index][0])
+        props.data[0] = props.data[0] - (names[index][1] * items[index][0])
         if (index > -1) {
-          names.splice(index, 1);
-          items.splice(index,1)
+            names.splice(index, 1);
+            items.splice(index, 1)
         }
         updateSummary(s(i))
         setTotalAmt(props.data[1])
         setTotalPrice(props.data[0])
     }
     useEffect(() => {
-    updateSummary(s(0))
+        updateSummary(s(0))
     }, [])
 
 
@@ -147,9 +169,9 @@ export default function Buying(props) {
                     <Button mt="5%" colorScheme="blue" onClick={() => proceedToPayment()}>Proceed to payment</Button>
                 </>
             )}
-    {paying &&(
-        <Payment price={props.data[0]} />
-    )}
+            {paying && (
+                <Payment price={props.data[0]} />
+            )}
 
         </Flex>
     )
