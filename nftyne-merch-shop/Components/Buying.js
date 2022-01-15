@@ -35,49 +35,46 @@ export default function Buying(props) {
     }
     const proceedToPayment = () => {
         if (!isAddressError && !isEmailError && !isNameError) {
-            fetch("/api/items")
-                .then((res) => res.json())
-                .then((data) => {
-                    const clothes = data.clothes;
-                    let goodItems = []
-                    let strippedNames = []
-                    for (let i = 0; i < names.length; i++) {
-                        strippedNames.push([names[i][0], items[i]])
+            let postObj = {
+                clothes:{
+
+                },
+                nonClothes:{
+
+                }
+            }
+            for(let i = 0; i < names.length; i++)
+            {
+                console.log(postObj)
+                if(items[i][1] !== null)
+                {
+                    if( postObj.clothes[names[i][0]] === undefined)
+                    {
+                         postObj.clothes[names[i][0]] = items[i];
                     }
-                    for (let i = 0; i < strippedNames.length; i++) {
-                        for (let j = 0; j < strippedNames.length; j++) {
-                            //if names and sizes are the same
-                            if (strippedNames[i][0] === strippedNames[j][0] && strippedNames[0][1][1] === strippedNames[j][1][1]) {
-                                strippedNames[i][1][0] += strippedNames[j][1][0];
-                                const index = strippedNames.indexOf(strippedNames[j]);
-                                if (index > -1) {
-                                    strippedNames.splice(index, 1);
-                                }
-                            }
-                        }
+                   else
+                   {
+                    postObj.clothes[names[i][0]][0] += items[i][0];
+                   }
+                }
+                else{
+                    if( postObj.nonClothes[names[i][0]] === undefined)
+                    {
+                         postObj.nonClothes[names[i][0]] = items[i];
                     }
-                    console.log(strippedNames)
-                    Object.keys(clothes).map((key, index) => {
-                        for (let i = 0; i < strippedNames.length; i++) {
-                            if (strippedNames[i][0] === key) {
-                                if (clothes[key][strippedNames[0][1][1]][0] === strippedNames[i][1][0])
-                                    goodItems.push(strippedNames[i])
-                                else {
-                                    window.alert(key + " in size " + strippedNames[0][1][1] + " is not available for sale anymore! There are " + clothes[key][strippedNames[0][1][1]][0] + " remaining. Please remove it from your cart to continue! Sorry!")
-                                    break;
-                                }
-                            }
-
-
-                        }
-
-
-                    })
-                    console.log(goodItems.length)
-                    if (goodItems.length > 0)
-                        togglePaying()
-                })
-
+                   else
+                   {
+                    postObj.nonClothes[names[i][0]][0] += items[i][0];
+                   }
+                }
+            }
+            fetch("/api/validateItems", {method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postObj)})
+            togglePaying()
         }
         else {
             window.alert("Please fill out shipping completely before continuing!")
@@ -108,6 +105,8 @@ export default function Buying(props) {
         updateSummary(s(i))
         setTotalAmt(props.data[1])
         setTotalPrice(props.data[0])
+        console.log("names "+names)
+        console.log("items "+items)
     }
     useEffect(() => {
         updateSummary(s(0))
