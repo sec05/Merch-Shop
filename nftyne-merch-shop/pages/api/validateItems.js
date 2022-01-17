@@ -18,6 +18,31 @@ export default async function handler(req, res) {
       }
       clothes[sheet.getCell(i,0).value] = tmp
     }
-    console.log(req.body);
-    res.status(200).send();
+    let nonClothes = {}
+    for(let i = 25; i <= 29; i++){
+      nonClothes[sheet.getCell(i,0).value] = [sheet.getCell(i,5).value, sheet.getCell(i,7).value]
+    }
+    nonClothes[sheet.getCell(32,0).value] = [sheet.getCell(32,5).value, sheet.getCell(32,7).value]
+
+    let errorItems = []
+    if(Object.keys(req.body.clothes).length != 0)
+    {
+      Object.keys(req.body.clothes).map((key,index)=>{
+        if(clothes[key][req.body.clothes[key][1]][0] < req.body.clothes[key][0])
+          {
+            errorItems.push(key)
+          }
+      })
+    }
+    if(Object.keys(req.body.nonClothes).length != 0)
+    {
+      Object.keys(req.body.nonClothes).map((key,index)=>{
+        if(nonClothes[key][0] < req.body.nonClothes[key][0])
+          {
+            errorItems.push(key)
+          }
+      })
+    }
+    
+    res.status(200).send(JSON.stringify(errorItems));
 }

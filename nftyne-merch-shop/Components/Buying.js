@@ -35,50 +35,60 @@ export default function Buying(props) {
     }
     const proceedToPayment = () => {
         if (!isAddressError && !isEmailError && !isNameError) {
+            document.body.style.cursor = "wait";
             let postObj = {
-                clothes:{
+                clothes: {
 
                 },
-                nonClothes:{
+                nonClothes: {
 
                 }
             }
-            for(let i = 0; i < names.length; i++)
-            {
+            for (let i = 0; i < names.length; i++) {
                 console.log(postObj)
-                if(items[i][1] !== null)
-                {
-                    if( postObj.clothes[names[i][0]] === undefined)
-                    {
-                         postObj.clothes[names[i][0]] = items[i];
+                if (items[i][1] !== null) {
+                    if (postObj.clothes[names[i][0]] === undefined) {
+                        postObj.clothes[names[i][0]] = items[i];
                     }
-                   else
-                   {
-                    postObj.clothes[names[i][0]][0] += items[i][0];
-                   }
+                    else {
+                        postObj.clothes[names[i][0]][0] += items[i][0];
+                    }
                 }
-                else{
-                    if( postObj.nonClothes[names[i][0]] === undefined)
-                    {
-                         postObj.nonClothes[names[i][0]] = items[i];
+                else {
+                    if (postObj.nonClothes[names[i][0]] === undefined) {
+                        postObj.nonClothes[names[i][0]] = items[i];
                     }
-                   else
-                   {
-                    postObj.nonClothes[names[i][0]][0] += items[i][0];
-                   }
+                    else {
+                        postObj.nonClothes[names[i][0]][0] += items[i][0];
+                    }
                 }
             }
-            fetch("/api/validateItems", {method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postObj)})
-            togglePaying()
+            fetch("/api/validateItems", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postObj)
+            }).then((res) => res.json())
+                .then((data) => {
+                    if (data.length != 0) {
+                        let str = ''
+                        for (let i = 0; i < data.length; i++) {
+                            str += data[i] + (i === data.length - 1 ? "" : ", ")
+                        }
+                        window.alert("You have selected too many of " + str + "! Please remove them from your cart!")
+                    }
+                    else {
+                        togglePaying()
+                    }
+                })
+
         }
         else {
             window.alert("Please fill out shipping completely before continuing!")
         }
+        document.body.style.cursor = "pointer";
     }
     const s = (i) => names.map((name) => {
         i++
@@ -105,8 +115,8 @@ export default function Buying(props) {
         updateSummary(s(i))
         setTotalAmt(props.data[1])
         setTotalPrice(props.data[0])
-        console.log("names "+names)
-        console.log("items "+items)
+        console.log("names " + names)
+        console.log("items " + items)
     }
     useEffect(() => {
         updateSummary(s(0))
@@ -165,7 +175,7 @@ export default function Buying(props) {
                         )}
                     </FormControl>
 
-                    <Button mt="5%" colorScheme="blue" onClick={() => proceedToPayment()}>Proceed to payment</Button>
+                    <Button mt="5%" mb="5%" colorScheme="blue" onClick={() => proceedToPayment()}>Proceed to payment</Button>
                 </>
             )}
             {paying && (
