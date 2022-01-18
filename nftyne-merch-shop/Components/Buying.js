@@ -45,7 +45,7 @@ export default function Buying(props) {
                 nonClothes: {
 
                 }
-            } 
+            }
             for (let i = 0; i < names.length; i++) {
                 if (items[i][1] !== null) {
                     if (postObj.clothes[names[i][0]] === undefined) {
@@ -64,7 +64,7 @@ export default function Buying(props) {
                     }
                 }
             }
-           
+
             fetch("/api/validateItems", {
                 method: 'POST',
                 headers: {
@@ -107,7 +107,7 @@ export default function Buying(props) {
     const removeItem = (index) => {
         props.updateCart(names.length - 1)
         let i = 0;
-        props.data[1]--
+        props.data[1] -= items[index][0]
         let amt = props.data[1] - items[index][0]
         props.data[0] = props.data[0] - (names[index][1] * items[index][0])
         if (index > -1) {
@@ -142,6 +142,13 @@ export default function Buying(props) {
                         </Thead>
                         <Tbody >
                             {summary}
+                            <Tr key={i}>
+                                <Td>Shipping</Td>
+                                <Td>{totalAmt}</Td>
+                                <Td><Center>{items[i - 1][0]}</Center></Td>
+                                <Td><Center>{items[i - 1][0] * name[1]}</Center></Td>
+                                <Td><Button colorScheme="red" onClick={() => removeItem(i - 1)}>Remove</Button></Td>
+                            </Tr>
                         </Tbody>
 
                     </Table>

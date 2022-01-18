@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme} >
-      <Script src="https://www.paypal.com/sdk/js?client-id=AWMS0m2gltZbBvzVdN2hIvoURpM_Eae282TqcBY6eqLrAuqh01VStBtGSqxg0NcIHo7XdKVk1fVAOz7M&currency=USD"></Script>
+     <title>NFTY-NE Merch Shop</title>
      <Component {...pageProps} />
    
 
