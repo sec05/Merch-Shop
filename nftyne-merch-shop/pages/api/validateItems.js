@@ -1,6 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 require("dotenv").config()
 export default async function handler(req, res) {
+  console.log(req.body)
   const doc = new GoogleSpreadsheet('1LOuiFOCWEbFn-C01CUYm2zwr72mwyOzajuE8_J1DefI');
   await doc.useServiceAccountAuth({
     client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,

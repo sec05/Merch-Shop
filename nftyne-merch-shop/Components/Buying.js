@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState, } from "react";
 import Payment from "./Payment"
+import data from "../key.json"
 /* 
 props
 names = [[str,price]]
@@ -36,16 +37,17 @@ export default function Buying(props) {
     const proceedToPayment = () => {
         if (!isAddressError && !isEmailError && !isNameError) {
             document.body.style.cursor = "wait";
-            let postObj = {
+            var postObj = {
+                key: data.API_key,
                 clothes: {
 
                 },
                 nonClothes: {
 
                 }
-            }
+            } 
+            console.log(postObj)
             for (let i = 0; i < names.length; i++) {
-                console.log(postObj)
                 if (items[i][1] !== null) {
                     if (postObj.clothes[names[i][0]] === undefined) {
                         postObj.clothes[names[i][0]] = items[i];
@@ -63,6 +65,7 @@ export default function Buying(props) {
                     }
                 }
             }
+           
             fetch("/api/validateItems", {
                 method: 'POST',
                 headers: {
@@ -115,8 +118,6 @@ export default function Buying(props) {
         updateSummary(s(i))
         setTotalAmt(props.data[1])
         setTotalPrice(props.data[0])
-        console.log("names " + names)
-        console.log("items " + items)
     }
     useEffect(() => {
         updateSummary(s(0))

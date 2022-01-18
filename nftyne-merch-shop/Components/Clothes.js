@@ -31,7 +31,7 @@ export default function Clothes(props) {
         updateMax(props.max)
     })
     const onSubmit = () => {
-        if (amount == 0) return
+        if (amount === 0) return
        const size = document.getElementById(props.name+" sizes").value 
         if( amount > sizes[size])
         {
