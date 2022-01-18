@@ -29,10 +29,10 @@ export default function Payment(props) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(postObj)})
+            body: JSON.stringify(null)})
         }}
         options={{
-          clientId: "PRODUCTION_CLIENT_ID"
+          clientId: "AWMS0m2gltZbBvzVdN2hIvoURpM_Eae282TqcBY6eqLrAuqh01VStBtGSqxg0NcIHo7XdKVk1fVAOz7M"
         }} />
 
             </>
