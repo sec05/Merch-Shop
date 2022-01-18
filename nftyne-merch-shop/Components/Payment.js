@@ -47,7 +47,7 @@ export default function Payment(props) {
             }
            
         }).render('#paypal-button-container');
-    }, [])
+    }, [paid,props.price])
     return (
         <Flex direction="column" justifyContent="center" alignItems="center">
             {!paid && (<>

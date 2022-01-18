@@ -12,7 +12,7 @@ export default function Clothes(props) {
     lg: int
     xl: int
     */
-    const [amount, updateAmount] = useState(0)
+    const [amount, updateAmount] = useState(1)
     const [max, updateMax] = useState()
     const sizes ={
         sm: props.sm,

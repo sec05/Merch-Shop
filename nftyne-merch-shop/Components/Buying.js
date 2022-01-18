@@ -35,7 +35,7 @@ export default function Buying(props) {
         else setPaying(true)
     }
     const proceedToPayment = () => {
-        if (!isAddressError && !isEmailError && !isNameError) {
+        if (!isAddressError && !isEmailError && !isNameError && totalPrice > 0) {
             document.body.style.cursor = "wait";
             var postObj = {
                 key: data.API_key,
@@ -46,7 +46,6 @@ export default function Buying(props) {
 
                 }
             } 
-            console.log(postObj)
             for (let i = 0; i < names.length; i++) {
                 if (items[i][1] !== null) {
                     if (postObj.clothes[names[i][0]] === undefined) {
@@ -180,7 +179,7 @@ export default function Buying(props) {
                 </>
             )}
             {paying && (
-                <Payment price={props.data[0]} />
+                <Payment price={totalPrice} />
             )}
 
         </Flex>

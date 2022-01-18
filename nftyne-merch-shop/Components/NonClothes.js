@@ -8,7 +8,7 @@ export default function NonClothes(props) {
     update: func
     img: str
     */
-    const [amount, updateAmount] = useState(0)
+    const [amount, updateAmount] = useState(1)
     const [max, updateMax] = useState()
     useEffect(()=>{
         updateMax(props.max)
