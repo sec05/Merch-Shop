@@ -3,7 +3,7 @@ import React, { useEffect, useState, } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 
 export default function Payment(props) {
-    const [paid, setPaid] = useState(false)
+    const [paid, setPaid] = useState(true)
     /*
     props
     amount []
@@ -15,7 +15,7 @@ export default function Payment(props) {
      
     }, [paid,props.price])
     return (
-        <Flex direction="column" justifyContent="center" alignItems="center">
+        <Flex direction="column" >
             {!paid && (<>
 
                 <Heading width="100%" mt="5%" size="lg">Purchase here</Heading>
@@ -33,15 +33,16 @@ export default function Payment(props) {
         }}
         options={{
           clientId: "AWMS0m2gltZbBvzVdN2hIvoURpM_Eae282TqcBY6eqLrAuqh01VStBtGSqxg0NcIHo7XdKVk1fVAOz7M"
-        }} />
+        }} onError={(err)=>alert(err)} />
 
             </>
 
             )}
             {paid && (
-               
-                <Heading> Thank you for your purchase, you will be sent an email confirmation shortly. If you have any questions or concerns please reach out ne-mfvp@nfty.org</Heading>
-               
+               <>
+       
+                <Heading wordBreak="break-word" width="100%" size="lg" mt="5%"> Thank you for your purchase, you will be sent an email confirmation shortly. If you have any questions or concerns please reach out ne-mfvp@nfty.org</Heading>
+               </>
             )}
 
         </Flex>

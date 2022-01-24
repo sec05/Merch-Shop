@@ -22,7 +22,7 @@ export default function Buying(props) {
     const [address, setAddress] = useState('')
     const [paying, setPaying] = useState(false)
     const [totalAmt, setTotalAmt] = useState(props.data[1])
-    const [totalPrice, setTotalPrice] = useState(props.data[0])
+    const [totalPrice, setTotalPrice] = useState(props.data[0] + (props.data[1]*2))
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handleNameChange = (e) => setName(e.target.value)
     const handleAddressChange = (e) => setAddress(e.target.value)
@@ -144,9 +144,9 @@ export default function Buying(props) {
                             {summary}
                             <Tr>
                                 <Td>Shipping</Td>
-                                <Td>{totalAmt}</Td>
                                 <Td></Td>
-                                <Td></Td>
+                                <Td><Center>{totalAmt}</Center></Td>
+                                <Td><Center>{totalAmt*2}</Center></Td>
                                 <Td></Td>
                             </Tr>
                         </Tbody>
