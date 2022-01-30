@@ -19,25 +19,23 @@ export default function Buying(props) {
     let items = props.items
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
     const [paying, setPaying] = useState(false)
     const [totalAmt, setTotalAmt] = useState(props.data[1])
-    const [totalPrice, setTotalPrice] = useState(props.data[0] + (props.data[1]*2))
+    const [totalPrice, setTotalPrice] = useState(props.data[0])
+    const [postObj, setPostObj] = useState({})
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handleNameChange = (e) => setName(e.target.value)
-    const handleAddressChange = (e) => setAddress(e.target.value)
 
     const isEmailError = email === ''
     const isNameError = name === ''
-    const isAddressError = address === ''
     const togglePaying = () => {
         if (paying) setPaying(false)
         else setPaying(true)
     }
     const proceedToPayment = () => {
-        if (!isAddressError && !isEmailError && !isNameError && totalPrice > 0) {
+        if (!isEmailError && !isNameError && totalPrice > 0) {
             document.body.style.cursor = "wait";
-            var postObj = {
+            var p = {
                 key: data.API_key,
                 clothes: {
 
@@ -48,22 +46,23 @@ export default function Buying(props) {
             }
             for (let i = 0; i < names.length; i++) {
                 if (items[i][1] !== null) {
-                    if (postObj.clothes[names[i][0]] === undefined) {
-                        postObj.clothes[names[i][0]] = items[i];
+                    if (p.clothes[names[i][0]] === undefined) {
+                        p.clothes[names[i][0]] = items[i];
                     }
                     else {
-                        postObj.clothes[names[i][0]][0] += items[i][0];
+                        p.clothes[names[i][0]][0] += items[i][0];
                     }
                 }
                 else {
-                    if (postObj.nonClothes[names[i][0]] === undefined) {
-                        postObj.nonClothes[names[i][0]] = items[i];
+                    if (p.nonClothes[names[i][0]] === undefined) {
+                        p.nonClothes[names[i][0]] = items[i];
                     }
                     else {
-                        postObj.nonClothes[names[i][0]][0] += items[i][0];
+                        p.nonClothes[names[i][0]][0] += items[i][0];
                     }
                 }
             }
+            setPostObj(p)
 
             fetch("/api/validateItems", {
                 method: 'POST',
@@ -130,7 +129,7 @@ export default function Buying(props) {
             {!paying && (
                 <>
                     <Table>
-                        <TableCaption color="black" fontSize="150%">You are buying {totalAmt} items for ${totalPrice}</TableCaption>
+                        <TableCaption color="black" fontSize="150%">You are reserving {totalAmt} items costing ${totalPrice}</TableCaption>
                         <Thead>
                             <Tr>
                                 <Th>Item</Th>
@@ -142,17 +141,11 @@ export default function Buying(props) {
                         </Thead>
                         <Tbody >
                             {summary}
-                            <Tr>
-                                <Td>Shipping</Td>
-                                <Td></Td>
-                                <Td><Center>{totalAmt}</Center></Td>
-                                <Td><Center>{totalAmt*2}</Center></Td>
-                                <Td></Td>
-                            </Tr>
+                           
                         </Tbody>
 
                     </Table>
-                    <Heading> Shipping </Heading>
+                    <Heading> Info </Heading>
                     <FormControl isInvalid={isNameError}>
                         <FormLabel htmlFor='email'>Name</FormLabel>
                         <Input id='name' type='text' value={name} onChange={handleNameChange} />
@@ -172,21 +165,13 @@ export default function Buying(props) {
                         )}
                     </FormControl>
 
-                    <FormControl isInvalid={isAddressError}>
-                        <FormLabel htmlFor='email'>Full Address (Number, Street, Town, State,Zipcode)</FormLabel>
-                        <Input id='address' type='text' value={address} onChange={handleAddressChange} />
-                        {!isAddressError ? (
-                            <></>
-                        ) : (
-                            <FormErrorMessage>Address is required.</FormErrorMessage>
-                        )}
-                    </FormControl>
+                  
 
-                    <Button mt="5%" mb="5%" colorScheme="blue" onClick={() => proceedToPayment()}>Proceed to payment</Button>
+                    <Button mt="5%" mb="5%" colorScheme="blue" onClick={() => proceedToPayment()}>Reserve </Button>
                 </>
             )}
             {paying && (
-                <Payment price={totalPrice} />
+                <Payment postObj={postObj} />
             )}
 
         </Flex>
